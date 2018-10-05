@@ -79,7 +79,16 @@ def evaluate(exp, env)
     #   else
     #     ???
     #   end
-    raise(NotImplementedError) # Problem 3
+    case exp[1][0]
+    when ">"
+      if exp[1][1][1] > exp[1][2][1]
+        evaluate(exp[2], env)
+      else
+        evaluate(exp[3], env)
+      end
+    else
+    end
+
 
   when "while"
     # Loop.
