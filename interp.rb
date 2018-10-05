@@ -1,5 +1,15 @@
 require "minruby"
 
+
+class RubyFunction
+  attr_reader :params, :body
+
+  def initialize(params, body)
+    @params = params
+    @body = body
+  end
+end
+
 # An implementation of the evaluator
 def evaluate(exp, env)
   # exp: A current node of AST
@@ -161,7 +171,10 @@ def evaluate(exp, env)
       # (*1) formal parameter: a variable as found in the function definition.
       # For example, `a`, `b`, and `c` are the formal parameters of
       # `def foo(a, b, c)`.
-      raise(NotImplementedError) # Problem 5
+      params = func.params
+      body = func.body
+      evaluate(["var_assign", params[0], exp[2]], env)
+      evaluate(body, env)
     end
 
   when "func_def"
@@ -173,7 +186,8 @@ def evaluate(exp, env)
     # All you need is store them into $function_definitions.
     #
     # Advice: $function_definitions[???] = ???
-    raise(NotImplementedError) # Problem 5
+    func_name = exp[1]
+    $function_definitions[func_name] = RubyFunction.new(exp[2], exp[3])
 
 
 #
