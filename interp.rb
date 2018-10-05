@@ -22,8 +22,11 @@ def evaluate(exp, env)
     # (Almost just copy-and-paste.  This is an exercise.)
     evaluate(exp[1], env) - evaluate(exp[2], env)
   when "*"
-    raise(NotImplementedError) # Problem 1
-  # ... Implement other operators that you need
+    evaluate(exp[1], env) * evaluate(exp[2], env)
+  when "/"
+    evaluate(exp[1], env) / evaluate(exp[2], env)
+  when "%"
+    evaluate(exp[1], env) % evaluate(exp[2], env)
 
   
 #
