@@ -58,8 +58,12 @@ def evaluate(exp, env)
     # Variable assignment: store (or overwrite) the value to the environment
     #
     # Advice: env[???] = ???
-    env[exp[1]] = exp[2][1]
-
+    case exp[2][0]
+    when "lit"
+      env[exp[1]] = exp[2][1]
+    else
+      env[exp[1]] = evaluate(exp[2], env)
+    end
 
 #
 ## Problem 3: Branchs and loops
