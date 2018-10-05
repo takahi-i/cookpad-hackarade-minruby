@@ -98,8 +98,13 @@ def evaluate(exp, env)
     end
 
   when "while"
-    # Loop.
-    raise(NotImplementedError) # Problem 3
+    left_value = get_value(exp[1][1], env)
+    right_value = get_value(exp[1][2], env)
+    while condition(exp[1][0], left_value, right_value)
+      evaluate(exp[2], env)
+      left_value = get_value(exp[1][1], env)
+      right_value = get_value(exp[1][2], env)
+    end
 
 
 #
@@ -182,6 +187,15 @@ def evaluate(exp, env)
     p("error")
     pp(exp)
     raise("unknown node")
+  end
+end
+
+def condition(sign, left_value, right_value)
+  case sign
+  when ">"
+    return left_value > right_value
+  when "<"
+    return left_value < right_value
   end
 end
 
