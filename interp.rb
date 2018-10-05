@@ -132,6 +132,8 @@ def evaluate(exp, env)
         p(evaluate(exp[2], env))
       when "Integer"
         Integer(evaluate(exp[2], env))
+      when "fizzbuzz"
+        fizzbuzz(get_value(exp[2], env))
       else
         raise("unknown builtin function")
       end
@@ -193,8 +195,23 @@ def evaluate(exp, env)
 
   else
     p("error")
-    pp(exp)
     raise("unknown node")
+  end
+end
+
+def fizzbuzz(n)
+  if n % 3 == 0
+    if n % 5 == 0
+      p("FizzBuzz")
+    else
+      p("Fizz")
+    end
+  else
+    if n % 5 == 0
+      p("Buzz")
+    else
+      p(n)
+    end
   end
 end
 
