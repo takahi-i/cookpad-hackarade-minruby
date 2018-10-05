@@ -38,7 +38,11 @@ def evaluate(exp, env)
     #
     # Advice 1: Insert `pp(exp)` and observe the AST first.
     # Advice 2: Apply `evaluate` to each child of this node.
-    raise(NotImplementedError) # Problem 2
+    exp.slice(1..exp.size).each{|c|
+      evaluate(c, env)
+    }
+
+
 
   # The second argument of this method, `env`, is an "environement" that
   # keeps track of the values stored to variables.
