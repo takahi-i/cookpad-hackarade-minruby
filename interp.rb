@@ -79,16 +79,23 @@ def evaluate(exp, env)
     #   else
     #     ???
     #   end
+    left_value = get_value(exp[1][1], env)
+    right_value = get_value(exp[1][2], env)
     case exp[1][0]
     when ">"
-      if exp[1][1][1] > exp[1][2][1]
+      if left_value > right_value
+        evaluate(exp[2], env)
+      else
+        evaluate(exp[3], env)
+      end
+    when "<"
+      if left_value < right_value
         evaluate(exp[2], env)
       else
         evaluate(exp[3], env)
       end
     else
     end
-
 
   when "while"
     # Loop.
@@ -175,6 +182,15 @@ def evaluate(exp, env)
     p("error")
     pp(exp)
     raise("unknown node")
+  end
+end
+
+def get_value(exp, env)
+  case exp[0]
+  when "lit"
+    return exp[1]
+  else
+    return evaluate(exp, env)
   end
 end
 
