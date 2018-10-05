@@ -14,7 +14,6 @@ end
 def evaluate(exp, env)
   # exp: A current node of AST
   # env: An environment (explained later)
-
   case exp[0]
 
 #
@@ -206,7 +205,7 @@ def evaluate(exp, env)
     evaluate(exp[1], env)[evaluate(exp[2], env)] = evaluate(exp[3], env)
 
   when "hash_new"
-    raise(NotImplementedError) # Problem 6
+    Hash[*exp.slice(1..exp.size).map{|item| evaluate(item, env)}]
 
   else
     p("error")
