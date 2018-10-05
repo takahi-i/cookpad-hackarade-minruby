@@ -14,7 +14,6 @@ end
 def evaluate(exp, env)
   # exp: A current node of AST
   # env: An environment (explained later)
-
   case exp[0]
 
 #
@@ -68,12 +67,7 @@ def evaluate(exp, env)
     # Variable assignment: store (or overwrite) the value to the environment
     #
     # Advice: env[???] = ???
-    case exp[2][0]
-    when "lit"
-      env[exp[1]] = exp[2][1]
-    else
-      env[exp[1]] = evaluate(exp[2], env)
-    end
+    env[exp[1]] = evaluate(exp[2], env)
 
 #
 ## Problem 3: Branchs and loops
@@ -89,8 +83,9 @@ def evaluate(exp, env)
     #   else
     #     ???
     #   end
-    left_value = get_value(exp[1][1], env)
-    right_value = get_value(exp[1][2], env)
+    left_value = evaluate(exp[1][1], env)
+    right_value = evaluate(exp[1][2], env)
+
     case exp[1][0]
     when ">"
       if left_value > right_value
@@ -115,6 +110,7 @@ def evaluate(exp, env)
     end
 
   when "while"
+
     left_value = get_value(exp[1][1], env)
     right_value = get_value(exp[1][2], env)
     while condition(exp[1][0], left_value, right_value)
@@ -173,8 +169,12 @@ def evaluate(exp, env)
       # `def foo(a, b, c)`.
       params = func.params
       body = func.body
-      evaluate(["var_assign", params[0], exp[2]], env)
-      evaluate(body, env)
+      local_env = {}
+
+      #["var_assign", params[0], exp[2]], env)
+      #local_env[params[0]] = exp[2][1]
+      local_env[params[0]] = evaluate(exp[2], env)
+      evaluate(body, local_env)
     end
 
   when "func_def"
