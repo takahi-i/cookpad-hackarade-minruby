@@ -94,7 +94,14 @@ def evaluate(exp, env)
       else
         evaluate(exp[3], env)
       end
+    when "=="
+      if left_value == right_value
+        evaluate(exp[2], env)
+      else
+        evaluate(exp[3], env)
+      end
     else
+      raise(NotImplementedError)
     end
 
   when "while"
