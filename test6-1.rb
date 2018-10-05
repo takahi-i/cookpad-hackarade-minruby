@@ -1,4 +1,4 @@
-a = [1, 2, 3]
-p(a[0])
-p(a[1])
-p(a[2])
+foobar = [1, 2, 3]
+p(foobar[0])
+p(foobar[1])
+p(foobar[2])

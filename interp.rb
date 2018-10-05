@@ -196,13 +196,13 @@ def evaluate(exp, env)
 
   # You don't need advices anymore, do you?
   when "ary_new"
-    raise(NotImplementedError) # Problem 6
+    exp.slice(1..exp.size).map{|item| evaluate(item, env)}
 
   when "ary_ref"
-    raise(NotImplementedError) # Problem 6
+    evaluate(exp[1], env)[evaluate(exp[2], env)]
 
   when "ary_assign"
-    raise(NotImplementedError) # Problem 6
+      raise(NotImplementedError) # Problem 6
 
   when "hash_new"
     raise(NotImplementedError) # Problem 6
