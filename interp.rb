@@ -10,6 +10,34 @@ class RubyFunction
   end
 end
 
+class Environments
+  def initialize()
+    @envs = []
+    @envs.push({})
+  end
+
+  def get(key)
+    @envs.last[key]
+  end
+
+  def set(key, value)
+    @envs.last[key] = value
+  end
+
+  def pop
+    @envs.pop
+  end
+
+  def push(env)
+    @envs.push(env)
+  end
+
+  def to_s
+    @envs.to_s
+  end
+end
+
+
 # An implementation of the evaluator
 def evaluate(exp, env)
   # exp: A current node of AST
@@ -61,13 +89,13 @@ def evaluate(exp, env)
     # Variable reference: lookup the value corresponded to the variable
     #
     # Advice: env[???]
-    env[exp[1]]
+    env.get(exp[1])
 
   when "var_assign"
     # Variable assignment: store (or overwrite) the value to the environment
     #
     # Advice: env[???] = ???
-    env[exp[1]] = evaluate(exp[2], env)
+    env.set(exp[1], evaluate(exp[2], env))
 
 #
 ## Problem 3: Branchs and loops
@@ -170,11 +198,11 @@ def evaluate(exp, env)
       params = func.params
       body = func.body
       local_env = {}
-
-      #["var_assign", params[0], exp[2]], env)
-      #local_env[params[0]] = exp[2][1]
       local_env[params[0]] = evaluate(exp[2], env)
-      evaluate(body, local_env)
+      env.push(local_env)
+      result = evaluate(body, env)
+      env.pop
+      result
     end
 
   when "func_def"
@@ -249,8 +277,9 @@ end
 
 
 $function_definitions = {}
-env = {}
+env = Environments.new()
 
 # `minruby_load()` == `File.read(ARGV.shift)`
 # `minruby_parse(str)` parses a program text given, and returns its AST
 evaluate(minruby_parse(minruby_load()), env)
+
